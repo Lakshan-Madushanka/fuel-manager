@@ -11,7 +11,6 @@ class UserConsumptionController extends Controller
 {
     public function show(Consumption $consumption)
     {
-
     }
 
     public function store(int $userId, FuelConsumeRequest $request, CreateNewConsumption $store)

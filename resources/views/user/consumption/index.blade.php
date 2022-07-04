@@ -57,7 +57,7 @@
                                         </td>
                                         <td class="px-4 py-4">
                                             @if ($user->remaining_fuel_quota > 0)
-                                                <a href="#" id=''
+                                                <a href="#!"
                                                    data="{{$user->id}}"
                                                    class="fuel-add-button text-center inline-block text-green-600">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -180,7 +180,6 @@
                 })
 
                 $('#modal-save-button').click(function () {
-                    console.log(selectedFuelAddButton)
                     const userId = selectedFuelAddButton.attr('data');
 
                     let addedAmount = $('#amount').val()
@@ -226,12 +225,19 @@
                         success: function () {
                             const consumptionElm = $(`#user-${userId}-consumption span`)
                             const previousConsumption = parseFloat(consumptionElm.text())
-                            console.log('prese', previousConsumption);
-                            consumptionElm.text(previousConsumption + parseFloat(addedAmount))
+                            const currentConsumption = (previousConsumption + parseFloat(addedAmount)).toLocaleString(
+                                undefined,
+                                { minimumFractionDigits: 2 }
+                            )
+                            consumptionElm.text(currentConsumption)
 
                             const remainingElm = $(`#user-${userId}-remaining span`)
-                            const previousRemaining = parseFloat(remainingElm.text())
-                            remainingElm.text(previousRemaining - parseFloat(addedAmount))
+                            const previousRemaining = parseFloat(remainingElm.text().replace(',', ''))
+                            const currentRemaining = (previousRemaining - parseFloat(addedAmount)).toLocaleString(
+                                undefined,
+                                { minimumFractionDigits: 2 }
+                            )
+                            remainingElm.text(currentRemaining)
 
                             modal.toggleClass('hidden')
                             $('input').val('');
@@ -251,7 +257,6 @@
                         }
 
                         if (errorData.error && errorData.error.toLowerCase().includes('limit')) {
-                            console.log('limit exceedededd')
                             $('#quota-limit-exceeded-error').append(` <x-input-error message=${errorData.message}></x-input-error>`)
                         }
                     }).always(function () {

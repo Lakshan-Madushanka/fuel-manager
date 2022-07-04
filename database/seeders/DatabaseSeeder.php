@@ -2,11 +2,18 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Enums\Quota\Basis;
+use App\Enums\User\Type;
+use App\Models\Quota;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    public const REGULAR_AMOUTN = 2500;
+    public const SPECIAL_AMOUNT = 5000;
+
     /**
      * Seed the application's database.
      *
@@ -14,11 +21,40 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $users = $this->createUsers();
+        $this->createQuotaRecord();
+        $this->assignConsumptionsforUsers($users);
+    }
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+    public function createUsers()
+    {
+        $users = User::factory()->count(100)->create();
+
+        User::factory()->makeAdmin()->create(['nic' => 1111]);
+        User::factory()->makeSuperAdmin()->create(['nic' => 2222]);
+
+        return $users;
+    }
+    public function createQuotaRecord()
+    {
+        Quota::create([
+            'basis' => Basis::WEEKLY->value,
+            'regular_amount' => self::REGULAR_AMOUTN,
+            'special_amount' => self::SPECIAL_AMOUNT,
+        ]);
+    }
+
+    public function assignConsumptionsforUsers(Collection $users)
+    {
+        $users->each(function (User $user) {
+            $amount = $user->type->value === Type::REGULAR->value
+                ? rand(0, self::REGULAR_AMOUTN)
+                : rand(0, self::SPECIAL_AMOUNT);
+
+            $user->consumptions()->create([
+                'amount' => $amount,
+                'consumed_at' => now()->subDays(rand(0, 7))->toDateTime(),
+            ]);
+        });
     }
 }

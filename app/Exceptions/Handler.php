@@ -46,5 +46,14 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        if (request()->wantsJson()) {
+            $this->renderable(function (CouldNotConsumeFuel $exception) {
+                return response()->json([
+                    'error' => 'AllowedQuotaLimitExceeded',
+                    'message' => $exception->getMessage(),
+                ], 500);
+            });
+        }
     }
 }

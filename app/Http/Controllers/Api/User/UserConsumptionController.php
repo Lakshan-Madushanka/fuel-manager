@@ -9,7 +9,6 @@ use App\Models\Consumption;
 
 class UserConsumptionController extends Controller
 {
-
     public function store(int $userId, FuelConsumeRequest $request, CreateNewConsumption $store)
     {
         $store->execute($userId, $request);

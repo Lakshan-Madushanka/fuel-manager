@@ -22,7 +22,6 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg h-full">
-
                 <x-search class="w-1/2"/>
                 <div id="result-loading-indicator" class="mx-auto flex justify-center"></div>
                 <div id='table-wrapper--primary' class="bg-white rounded-lg shadow-lg py-6">
@@ -40,6 +39,7 @@
                                     </th>
                                     <th class="px-4 py-3">Remaining</th>
                                     <th class="px-4 py-3">Add Consumption</th>
+                                    <th class="px-4 py-3">Consumption History</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -59,8 +59,8 @@
                                             @if ($user->remaining_fuel_quota > 0)
                                                 <a href="#!"
                                                    data="{{$user->id}}"
-                                                   class="fuel-add-button text-center inline-block text-green-600">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                   class="fuel-add-button text-center w-full inline-block text-green-600">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 mx-auto w-6" fill="none"
                                                          viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                               d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -69,6 +69,15 @@
                                             @else
                                                 <x-badge content="Limit Exceeded" type="danger"/>
                                             @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{route('users.consumptions.index', ['user' => $user->id])}}"
+                                               class="text-center inline-block text-black-600 w-full">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto"  viewBox="0 0 20 20" fill="currentColor">
+                                                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                                                    <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
+                                                </svg>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -156,7 +165,7 @@
                 function loadSearchResults(searchVal) {
                     let route = "{{route('users.index')}}" + "?search=" + searchVal;
 
-                    $('#table-wrapper').load(`${route} #table-wrapper`, function () {
+                    $('#table-wrapper--primary').load(`${route} #table-wrapper`, function () {
                         $('#result-loading-indicator').empty();
                         searchBtnElm.toggleClass('cursor-not-allowed');
                         searchLoading = false;

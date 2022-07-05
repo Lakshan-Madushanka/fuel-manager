@@ -33,7 +33,9 @@ Route::middleware([
 Route::resource('users', UserController::class)->only('index');
 
 // fuel consumptions
-Route::resource('users.consumptions', UserConsumptionController::class)->only(['index', 'show', 'store']);
+Route::resource('users.consumptions', UserConsumptionController::class)
+    ->scoped()
+    ->only(['index', 'show', 'store']);
 
 // Admin dashboard
 Route::prefix('admin')->name('admin.dashboard')->group(function () {

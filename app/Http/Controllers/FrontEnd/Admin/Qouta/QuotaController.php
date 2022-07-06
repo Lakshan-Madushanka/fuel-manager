@@ -29,6 +29,5 @@ class QuotaController extends Controller
         if ($quota->wasRecentlyCreated) {
             return back()->banner('Quota plan created successfully !');
         }
-
     }
 }

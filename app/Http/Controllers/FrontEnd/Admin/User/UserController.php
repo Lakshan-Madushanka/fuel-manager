@@ -13,5 +13,4 @@ class UserController extends Controller
 
         return view('user.consumption.index', ['users' => $users]);
     }
-
 }

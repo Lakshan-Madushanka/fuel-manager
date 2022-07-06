@@ -14,10 +14,10 @@ class UserConsumptionController extends Controller
         return view('user.consumption.show', compact('consumptions'));
     }
 
-   /* public function store(int $userId, FuelConsumeRequest $request, CreateNewConsumption $store)
-    {
-        $store->execute($userId, $request);
+    /* public function store(int $userId, FuelConsumeRequest $request, CreateNewConsumption $store)
+     {
+         $store->execute($userId, $request);
 
-        return back();
-    }*/
+         return back();
+     }*/
 }

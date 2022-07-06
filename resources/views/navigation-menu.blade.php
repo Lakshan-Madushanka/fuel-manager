@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('admin.dashboard') }}">
                         <x-jet-application-mark class="block h-9 w-auto"/>
                     </a>
                 </div>
@@ -22,7 +22,7 @@
 
                 <!-- Consumptions -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
+                    <x-jet-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')">
                         {{ __('Consumptions') }}
                     </x-jet-nav-link>
                 </div>
@@ -32,6 +32,14 @@
                     <x-jet-nav-link href="{{ route('users.consumptions.index', ['user' => \Illuminate\Support\Facades\Auth::id()]) }}"
                                     :active="request()->routeIs('users.consumptions.index')">
                         {{ __('Consumptions History') }}
+                    </x-jet-nav-link>
+                </div>
+
+                <!-- quota lans -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="{{ route('admin.quotas.index') }}"
+                                    :active="request()->routeIs('admin.quotas.index')">
+                        {{ __('Quota Plans') }}
                     </x-jet-nav-link>
                 </div>
             </div>

@@ -29,78 +29,65 @@
                         @if($users->isEmpty())
                             <p class="bg-yellow-400 mx-auto w-1/2 text-center p-2 my-4 text-lg">No records found</p>
                         @else
-                            <table class="w-full text-left rounded-lg">
-                                <thead>
-                                <tr class="text-gray-800 text-center border border-b-0">
-                                    <th class="px-4 py-3">#</th>
-                                    <th class="px-4 py-3">NIC</th>
-                                    <th class="px-4 py-3">Name</th>
-                                    <th class="px-4 py-3">{{ucfirst(strtolower($fqs->basis->name))}} Consumption (lr)
-                                    </th>
-                                    <th class="px-4 py-3">Remaining</th>
-                                    <th class="px-4 py-3">Add Consumption</th>
-                                    <th class="px-4 py-3">Consumption History</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($users as $user)
-                                    <tr class="w-full font-light text-gray-700 text-center bg-gray-100 whitespace-no-wrap border border-b-0 hover:bg-gray-50">
-                                        <td class="px-4 py-4">{{$loop->iteration}}</td>
-                                        <td class="px-4 py-4">{{$user->nic}}</td>
-                                        <td class="px-4 py-4">{{$user->name}}</td>
-                                        <td class="px-4 py-4" id="user-{{$user->id}}-consumption">
-                                            <x-badge :content="number_format($user->currentPlanFuelConsumptionAmount, 2) ?? 0.00"
-                                                     type="warning"/>
-                                        </td>
-                                        <td class="px-4 py-4" id="user-{{$user->id}}-remaining">
-                                            <x-badge :content="number_format($user->remaining_fuel_quota, 2)" type="primary"/>
-                                        </td>
-                                        <td class="px-4 py-4">
-                                            @if ($user->remaining_fuel_quota > 0)
-                                                <a href="#!"
-                                                   data="{{$user->id}}"
-                                                   class="fuel-add-button text-center w-full inline-block text-green-600">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 mx-auto w-6" fill="none"
-                                                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                              d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            <x-table.index>
+                                <x-slot:columns>
+                                    <x-table.column>#</x-table.column>
+                                    <x-table.column>NIC</x-table.column>
+                                    <x-table.column>Name</x-table.column>
+                                    <x-table.column>
+                                        {{ucfirst(strtolower($fqs->basis->name))}} Consumption (lr)
+                                    </x-table.column>
+                                    <x-table.column>Remaining</x-table.column>
+                                    <x-table.column>Add Consumption</x-table.column>
+                                    <x-table.column>Consumption History</x-table.column>
+                                </x-slot:columns>
+                                <x-slot:rows>
+                                    @foreach($users as $user)
+                                        <x-table.row>
+                                            <x-table.row-item>{{$loop->iteration}}</x-table.row-item>
+                                            <x-table.row-item>{{$user->nic}}</x-table.row-item>
+                                            <x-table.row-item>{{$user->name}}</x-table.row-item>
+                                            <x-table.row-item id="user-{{$user->id}}-consumption" v="opa">
+                                                <x-badge
+                                                        :content="number_format($user->currentPlanFuelConsumptionAmount, 2) ?? 0.00"
+                                                        type="warning"/>
+                                            </x-table.row-item>
+                                            <x-table.row-item id="user-{{$user->id}}-remaining">
+                                                <x-badge :content="number_format($user->remaining_fuel_quota, 2)"
+                                                         type="primary"/>
+                                            </x-table.row-item>
+                                            <x-table.row-item>
+                                                @if ($user->remaining_fuel_quota > 0)
+                                                    <a href="#!"
+                                                       data="{{$user->id}}"
+                                                       class="fuel-add-button text-center w-full inline-block text-green-600">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 mx-auto w-6"
+                                                             fill="none"
+                                                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                  d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                        </svg>
+                                                    </a>
+                                                @else
+                                                    <x-badge content="Limit Exceeded" type="danger"/>
+                                                @endif
+                                            </x-table.row-item>
+                                            <x-table.row-item>
+                                                <a href="{{route('users.consumptions.index', ['user' => $user->id])}}"
+                                                   class="text-center inline-block text-black-600 w-full">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto"
+                                                         viewBox="0 0 20 20" fill="currentColor">
+                                                        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                                                        <path fill-rule="evenodd"
+                                                              d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                                                              clip-rule="evenodd"/>
                                                     </svg>
                                                 </a>
-                                            @else
-                                                <x-badge content="Limit Exceeded" type="danger"/>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <a href="{{route('users.consumptions.index', ['user' => $user->id])}}"
-                                               class="text-center inline-block text-black-600 w-full">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto"  viewBox="0 0 20 20" fill="currentColor">
-                                                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                                                    <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
-                                                </svg>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-
-
-                                {{-- <tr class="w-full font-light text-gray-700 bg-gray-100 whitespace-no-wrap border">
-                                     <td class="px-4 py-4">3</td>
-                                     <td class="px-4 py-4">Adam wathan</td>
-                                     <td class="px-4 py-4">
-                                         <img class="h-6 w-6 rounded-full"
-                                              src="/assets/docs/master/image-01.jpg">
-                                     </td>
-                                     <td class="px-4 py-4">tmgbedu@gmail.com</td>
-                                     <td class="px-4 py-4">
-                                         <span class="text-sm bg-red-500 text-white rounded-full px-2 py-1">Not Active</span>
-                                     </td>
-                                     <td class="text-center py-4">
-                                         <a href="#"><span class="fill-current text-green-500 material-icons">edit</span></a>
-                                         <a href="#"><span class="fill-current text-red-500 material-icons">highlight_off</span></a>
-                                     </td>
-                                 </tr>--}}
-                                </tbody>
-                            </table>
+                                            </x-table.row-item>
+                                        </x-table.row>
+                                    @endforeach
+                                </x-slot:rows>
+                            </x-table.index>
                     </div>
                     @if(! $users->isEmpty())
                         <div class="mt-4 px-4">
@@ -163,7 +150,7 @@
 
                 // make ajax request to server to load search results
                 function loadSearchResults(searchVal) {
-                    let route = "{{route('users.index')}}" + "?search=" + searchVal;
+                    let route = "{{route('admin.users.index')}}" + "?search=" + searchVal;
 
                     $('#table-wrapper--primary').load(`${route} #table-wrapper`, function () {
                         $('#result-loading-indicator').empty();
@@ -208,7 +195,7 @@
 
                 function sendConsumedPostRequest(userId, addedAmount) {
                     let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                    let route = "{{route('api.users.consumptions.store', ['user' => ':id'])}}"
+                    let route = "{{route('api.admin.users.consumptions.store', ['user' => ':id'])}}"
                     route = route.replace(':id', userId)
 
                     if (addedAmount === '') {
@@ -236,7 +223,7 @@
                             const previousConsumption = parseFloat(consumptionElm.text())
                             const currentConsumption = (previousConsumption + parseFloat(addedAmount)).toLocaleString(
                                 undefined,
-                                { minimumFractionDigits: 2 }
+                                {minimumFractionDigits: 2}
                             )
                             consumptionElm.text(currentConsumption)
 
@@ -244,7 +231,7 @@
                             const previousRemaining = parseFloat(remainingElm.text().replace(',', ''))
                             const currentRemaining = (previousRemaining - parseFloat(addedAmount)).toLocaleString(
                                 undefined,
-                                { minimumFractionDigits: 2 }
+                                {minimumFractionDigits: 2}
                             )
                             remainingElm.text(currentRemaining)
 

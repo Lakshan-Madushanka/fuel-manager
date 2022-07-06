@@ -2,14 +2,11 @@
 
 namespace Database\Seeders;
 
-<<<<<<< HEAD
 use App\Enums\Quota\Basis;
 use App\Enums\User\Type;
 use App\Models\Quota;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-=======
->>>>>>> 554d6c2f312134916341e712b3cd1e009bb1b0b9
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -40,7 +37,7 @@ class DatabaseSeeder extends Seeder
     }
     public function createQuotaRecord()
     {
-        Quota::create([
+        quota::create([
             'basis' => Basis::WEEKLY->value,
             'regular_amount' => self::REGULAR_AMOUTN,
             'special_amount' => self::SPECIAL_AMOUNT,

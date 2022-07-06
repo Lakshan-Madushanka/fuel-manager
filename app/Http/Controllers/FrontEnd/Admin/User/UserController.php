@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\FrontEnd\Admin\User;
 
 use App\Actions\User\GetAllUsers;
 use App\Http\Controllers\Controller;
@@ -13,4 +13,5 @@ class UserController extends Controller
 
         return view('user.consumption.index', ['users' => $users]);
     }
+
 }

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\Dashboard\DashboardController;
-use App\Http\Controllers\Api\User\UserConsumptionController;
+use App\Http\Controllers\Api\Admin\User\UserConsumptionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,9 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::name('api.')->group(function () {
+Route::name('api.admin.')->group(function () {
     // fuel consumptions
-    Route::resource('users.consumptions', UserConsumptionController::class)->only(['index', 'show', 'store']);
+    Route::resource('users.consumptions', UserConsumptionController::class)->only(['store']);
 });
 
 Route::prefix('admin')->name('api.admin.dashboard.')->group(function () {

@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Admin\Dashboard\DashboardController;
-use App\Http\Controllers\User\UserConsumptionController;
-use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\FrontEnd\Admin\Dashboard\DashboardController;
+use App\Http\Controllers\FrontEnd\Admin\Qouta\QuotaController;
+use App\Http\Controllers\FrontEnd\Admin\User\UserController;
+use App\Http\Controllers\FrontEnd\User\UserConsumptionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,15 +30,20 @@ Route::middleware([
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 });
 
-//users
-Route::resource('users', UserController::class)->only('index');
+Route::prefix('admin')->name('admin.')->group(function () {
+    //users
+    Route::resource('users', UserController::class)->only('index');
 
-// fuel consumptions
+    //Admin Dashboard
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+
+    //quota
+    Route::resource('/quotas', QuotaController::class)->only(['index', 'store', 'create']);
+
+});
+
+// fuel consumption
 Route::resource('users.consumptions', UserConsumptionController::class)
     ->scoped()
-    ->only(['index', 'show', 'store']);
+    ->only(['index']);
 
-// Admin dashboard
-Route::prefix('admin')->name('admin.dashboard')->group(function () {
-    Route::get('/dashboard', DashboardController::class);
-});

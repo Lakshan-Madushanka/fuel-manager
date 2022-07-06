@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Dashboard;
+namespace App\Http\Controllers\FrontEnd\Admin\Dashboard;
 
 use App\Actions\Dashboard\GetCurrentFuelConsumptionReport;
 use App\Actions\Dashboard\GetFuelConsumptionReport;

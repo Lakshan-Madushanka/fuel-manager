@@ -4,12 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-<<<<<<< HEAD
 class CreatePersonalAccessTokensTable extends Migration
 {
-=======
-return new class () extends Migration {
->>>>>>> 554d6c2f312134916341e712b3cd1e009bb1b0b9
     /**
      * Run the migrations.
      *

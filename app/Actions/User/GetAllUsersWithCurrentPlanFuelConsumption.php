@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Pipeline\Pipeline;
 
-class GetAllUsers
+class GetAllUsersWithCurrentPlanFuelConsumption
 {
     public function execute(): Paginator
     {

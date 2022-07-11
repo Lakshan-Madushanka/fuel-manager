@@ -20,7 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::name('api.admin.')->group(function () {
+Route::middleware([
+    'auth:sanctum',
+])->name('api.admin.')->group(function () {
     // fuel consumptions
     Route::resource('users.consumptions', UserConsumptionController::class)->only(['store']);
 });

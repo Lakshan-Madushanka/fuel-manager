@@ -20,9 +20,7 @@ class FuelQuotaService
 
     private function initProperties(): void
     {
-        $quotaDetails = Quota::query()
-            ->orderBy('id', 'desc')
-            ->first();
+        $quotaDetails = self::getCurrentQuotaPlan();
 
         $this->regularLimit = $quotaDetails->regular_amount;
         $this->specialLimit = $quotaDetails->special_amount;
@@ -54,5 +52,21 @@ class FuelQuotaService
                 return $plan;
 
         }
+    }
+
+    public static function getCurrentQuotaPlan()
+    {
+        return Quota::query()
+            ->where('is_current_plan', true)
+            ->first();
+    }
+
+    public static function makeAllPlansDeactivate(): void
+    {
+        Quota::query()
+            ->where('is_current_plan', true)
+            ->chunkById(200, function ($plans) {
+                $plans->each->update(['is_current_plan' => false]);
+            }, 'id');
     }
 }

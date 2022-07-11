@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\Quota\Basis;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Enum;
 
 class QuotaCreateRequest extends FormRequest
@@ -15,7 +16,7 @@ class QuotaCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        abort_if(Gate::denies('owner'), 403);
     }
 
     /**
@@ -29,6 +30,7 @@ class QuotaCreateRequest extends FormRequest
             'basis' => ['required', new Enum(Basis::class)],
             'regular_amount' => ['required', 'integer', 'gt:0'],
             'special_amount' => ['required', 'integer', 'gt:0'],
+            'is_current_plan' => ['required', 'boolean'],
         ];
     }
 }

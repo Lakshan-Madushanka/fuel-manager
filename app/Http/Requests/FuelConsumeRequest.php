@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use JetBrains\PhpStorm\ArrayShape;
 
 class FuelConsumeRequest extends FormRequest
@@ -14,7 +15,7 @@ class FuelConsumeRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        abort_if(Gate::denies('admin'), 403);
     }
 
     /**

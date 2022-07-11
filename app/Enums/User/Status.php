@@ -2,12 +2,12 @@
 
 namespace App\Enums\User;
 
-enum Role: int
+enum Status: int
 {
-    case OWNER = 1;
-    case SUPER_ADMIN = 2;
-    case ADMIN = 3;
-    case REGULAR = 4;
+    case APPROVED = 1;
+    case PENDING = 2;
+    case BLOCKED = 3;
+
 
     public static function getAllAvailableValues(): array
     {

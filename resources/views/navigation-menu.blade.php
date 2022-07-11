@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('dashboard') }}">
                         <x-jet-application-mark class="block h-9 w-auto"/>
                     </a>
                 </div>
@@ -14,34 +14,50 @@
 
                 <!-- Dashboard -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('admin.dashboard') }}"
-                                    :active="request()->routeIs('admin.dashboard')">
+                    <x-jet-nav-link href="{{ route('dashboard') }}"
+                                    :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
                 </div>
 
-                <!-- Consumptions -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')">
-                        {{ __('Consumptions') }}
-                    </x-jet-nav-link>
-                </div>
+                @can('administrative')
+                    <!-- Users -->
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-jet-nav-link href="{{ route('admin.users.index') }}"
+                                        :active="request()->routeIs('admin.users.index')">
+                            {{ __('Users') }}
+                        </x-jet-nav-link>
+                    </div>
+                @endcan
 
+                @if(\Illuminate\Support\Facades\Gate::allows('administrative') || \Illuminate\Support\Facades\Gate::allows('admin'))
+                    <!-- Consumptions -->
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-jet-nav-link href="{{ route('admin.users.withCurrentPlanFuelConsumption') }}"
+                                        :active="request()->routeIs('admin.users.withCurrentPlanFuelConsumption')">
+                            {{ __('Consumptions') }}
+                        </x-jet-nav-link>
+                    </div>
+                @endif
+
+                @if(\Illuminate\Support\Facades\Auth::check())
                 <!-- User Consumptions History -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('users.consumptions.index', ['user' => \Illuminate\Support\Facades\Auth::id()]) }}"
-                                    :active="request()->routeIs('users.consumptions.index')">
-                        {{ __('Consumptions History') }}
-                    </x-jet-nav-link>
-                </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-jet-nav-link
+                                href="{{ route('users.consumptions.index', ['user' => \Illuminate\Support\Facades\Auth::id()]) }}"
+                                :active="request()->routeIs('users.consumptions.index')">
+                            {{ __('Consumptions History') }}
+                        </x-jet-nav-link>
+                    </div>
+                @endif
 
-                <!-- quota lans -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('admin.quotas.index') }}"
-                                    :active="request()->routeIs('admin.quotas.index')">
-                        {{ __('Quota Plans') }}
-                    </x-jet-nav-link>
-                </div>
+                    <!-- quota lans -->
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-jet-nav-link href="{{ route('admin.quotas.index') }}"
+                                        :active="request()->routeIs('admin.quotas.index')">
+                            {{ __('Quota Plans') }}
+                        </x-jet-nav-link>
+                    </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">

@@ -14,9 +14,11 @@ class Quota extends Model
         'basis',
         'regular_amount',
         'special_amount',
+        'is_current_plan',
     ];
 
     protected $casts = [
-      'basis' => Basis::class,
+        'basis' => Basis::class,
+        'is_current_plan' => 'boolean',
     ];
 }

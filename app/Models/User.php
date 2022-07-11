@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Enums\User\Role;
+use App\Enums\User\Status;
 use App\Enums\User\Type;
 use App\Services\FuelQuotaService;
 use App\Services\UserFuelConsumptionService;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -35,6 +35,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'approved',
     ];
 
     /**
@@ -58,6 +59,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'type' => Type::class,
         'role' => Role::class,
+        'status' => Status::class,
     ];
 
     /**
@@ -92,12 +94,8 @@ class User extends Authenticatable
             ], 'amount');
     }
 
-    public function remainingFuelQuota(): Attribute
+    public function getRemainingFuelQuota(): float
     {
-        $remainingQuota = (new UserFuelConsumptionService($this))->getRemainingFuelQuota();
-
-        return Attribute::make(
-            get: fn () => $remainingQuota
-        );
+        return (new UserFuelConsumptionService($this))->getRemainingFuelQuota();
     }
 }

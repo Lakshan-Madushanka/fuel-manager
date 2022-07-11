@@ -8,7 +8,7 @@ class ApproveAccount
 {
     public function execute(User $user)
     {
-        if (! $user->approved) {
+        if (! $user->approved->value) {
             $user->update(['approved' => true]);
         }
 

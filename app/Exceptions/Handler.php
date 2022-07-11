@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -55,5 +57,15 @@ class Handler extends ExceptionHandler
                 ], 500);
             });
         }
+
+        $this->renderable(function (QueryException $exception, Request $request) {
+            if ($exception->errorInfo[1] === 1451) {
+                $request->session()->flash('flash.banner', 'Some records cannot be deletes
+                as it is associated with other records !');
+                $request->session()->flash('flash.bannerStyle', 'danger');
+
+                return back();
+            }
+        });
     }
 }

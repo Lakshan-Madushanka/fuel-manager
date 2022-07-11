@@ -17,6 +17,7 @@ return new class () extends Migration {
             $table->tinyInteger('basis');
             $table->float('special_amount');
             $table->float('regular_amount');
+            $table->boolean('is_current_plan')->index();
             $table->timestamps();
         });
     }

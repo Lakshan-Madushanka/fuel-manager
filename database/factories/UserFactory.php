@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\User\Role;
+use App\Enums\User\Status;
 use App\Enums\User\Type;
 use App\Models\Team;
 use App\Models\User;
@@ -31,8 +32,9 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'status' => $this->faker->randomElement(Status::getAllAvailableValues()),
             'type' => $this->faker->randomElement(Type::getAllAvailableValues()),
-            'role' => Type::REGULAR->value,
+            'role' => Role::REGULAR->value,
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];
@@ -76,7 +78,7 @@ class UserFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-              'type' => Role::ADMIN->value,
+              'role' => Role::ADMIN->value,
             ];
         });
     }
@@ -85,7 +87,25 @@ class UserFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'type' => Role::SUPER_ADMIN->value,
+                'role' => Role::SUPER_ADMIN->value,
+            ];
+        });
+    }
+
+    public function makeOwner()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role' => Role::OWNER->value,
+            ];
+        });
+    }
+
+    public function approveAccount()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => Status::APPROVED->value,
             ];
         });
     }

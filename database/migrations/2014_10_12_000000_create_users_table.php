@@ -23,7 +23,7 @@ return new class () extends Migration {
             $table->string('password');
             $table->tinyInteger('type')->default(Type::REGULAR->value);
             $table->boolean('role')->default(Role::REGULAR->value);
-            $table->boolean('approved')->default(false);
+            $table->boolean('status')->default(\App\Enums\User\Status::PENDING->value);
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();

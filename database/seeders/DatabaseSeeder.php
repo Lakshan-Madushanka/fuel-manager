@@ -30,17 +30,20 @@ class DatabaseSeeder extends Seeder
     {
         $users = User::factory()->count(100)->create();
 
-        User::factory()->makeAdmin()->create(['nic' => 1111]);
-        User::factory()->makeSuperAdmin()->create(['nic' => 2222]);
+        User::factory()->makeOwner()->approveAccount()->create(['nic' => 1111]);
+        User::factory()->makeSuperAdmin()->approveAccount()->create(['nic' => 2222]);
+        User::factory()->makeAdmin()->approveAccount()->create(['nic' => 3333]);
 
         return $users;
     }
+
     public function createQuotaRecord()
     {
         quota::create([
             'basis' => Basis::WEEKLY->value,
             'regular_amount' => self::REGULAR_AMOUTN,
             'special_amount' => self::SPECIAL_AMOUNT,
+            'is_current_plan' => true,
         ]);
     }
 
